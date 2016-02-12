@@ -97,7 +97,7 @@ void loop() {
   digitalWrite(PING_TRIG_PIN, LOW);
   delayMicroseconds(2);
   digitalWrite(PING_TRIG_PIN, HIGH);
-  delayMicroseconds(5);
+  delayMicroseconds(10);
   digitalWrite(PING_TRIG_PIN, LOW);
 
   // read the signal from the PING))): a HIGH
@@ -166,5 +166,7 @@ long microsecondsToCentimeters(long microseconds) {
   // The speed of sound is 340 m/s or 29 microseconds per centimeter.
   // The ping travels out and back, so to find the distance of the
   // object we take half of the distance travelled.
-  return microseconds / 29 / 2;
+  // so the result would be microseconds/ 29 / 2.
+  // or by doing some extra math microseconds / 58
+  return microseconds / 58;
 }
