@@ -1,12 +1,12 @@
 /* Pulse))) Parking SEnsor
 
-   This sketch uses a PING))) ultrasonic rangefinder to detect if
+   This sketch uses a PING))) ultrasonic sensor to detect if
    a car is correctly parked in a garage.
 
-   This operates as follows, if the ultrassonic detects a vehicle
-   in range, it turns on a red light and starts beeping in order
-   to alert that the vehicle should not move further. If no 
-   vehicle is detected a green light is turned on and no
+   This operates as follows, if the ultrassonic sensor detects a 
+   vehicle in range, it turns on a red light and starts beeping 
+   in order to alert that the vehicle should not move further. 
+   If no vehicle is detected a green light is turned on and no
    beeping is produced.
 
    Operation Example:
@@ -25,9 +25,9 @@
    The ultrasonic sensor must be placed on the ceiling and in
    the opposite side of a garage door.   
 
-   You have to change constant RANGE_OK, that representes the
-   distance between the ceiling and the floor,
-   to the desired value.
+   You have to change constant RANGE_OK, that represents the
+   distance between the ceiling and the floor, to the desired 
+   value.
    
    The circuit:
 	* +V connection of the PING))) attached to +5V
@@ -48,8 +48,7 @@
    (e.g. 12v DC led strip, 12v DC horn) 
    (see http://playground.arduino.cc/uploads/Learning/relays.pdf)
      
-   created 12 Fev 2016
-   by Tiago Santos
+   created by Tiago Santos
 
  */
 
@@ -163,10 +162,10 @@ void loop() {
 }
 
 long microsecondsToCentimeters(long microseconds) {
-  // The speed of sound is 340 m/s or 29 microseconds per centimeter.
-  // The ping travels out and back, so to find the distance of the
-  // object we take half of the distance travelled.
-  // so the result would be microseconds/ 29 / 2.
-  // or by doing some extra math microseconds / 58
+  // The speed of sound is 340 m/s or 29 microseconds per 
+  // centimeter. The ping travels out and back, so to find 
+  // the distance of the object we take half of the distance
+  // travelled. So the result would be microseconds/ 29 / 2,
+  // or by doing some extra math, microseconds / 58.
   return microseconds / 58;
 }
