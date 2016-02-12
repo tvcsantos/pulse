@@ -7,11 +7,16 @@ if the ultrassonic sensor detects a vehicle in range, it turns on a red light an
 
 ##Example:
   (W - Wall, S - Sensor, G - Garage Door, V - Vehicle)
+  
    
   W _ S _ _ G (Empty Garage)           Green On, Red & Buzzer Off
+  
   W _ S _ V G (Vehicle Parked OK)      Green On, Red & Buzzer Off
+  
   W _ S V _ G (Vehicle Parked OK)      Green On, Red & Buzzer Off
+  
   W _ V _ _ G (Vehicle Below Sensor)   Green Off, Red & Buzzer On
+  
   W V S _ _ G (Vehicle Crossed Sensor) Green Off, Red & Buzzer On
 
 #Important
