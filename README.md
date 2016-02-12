@@ -5,7 +5,7 @@ This is Pulse an Arduino Parking Sensor. It uses an ultrassonic sensor to dected
 
 if the ultrassonic sensor detects a vehicle in range, it turns on a red light and starts beeping in order to alert that the vehicle should not move further. If no vehicle is detected a green light is turned on and no beeping is produced.
 
-##Example:
+##Example
   (W - Wall, S - Sensor, G - Garage Door, V - Vehicle)
   
    
