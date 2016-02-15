@@ -3,7 +3,7 @@ This is Pulse an Arduino Parking Sensor. It uses an ultrassonic sensor to dected
 
 #Operation
 
-if the ultrassonic sensor detects a vehicle in range, it turns on a red light and starts beeping in order to alert that the vehicle should not move further. If no vehicle is detected a green light is turned on and no beeping is produced.
+If the ultrassonic sensor detects a vehicle in range, it turns on a red light and starts beeping in order to alert that the vehicle should not move further. If no vehicle is detected a green light is turned on and no beeping is produced.
 
 ##Example
   (W - Wall, S - Sensor, G - Garage Door, V - Vehicle)
@@ -22,9 +22,9 @@ if the ultrassonic sensor detects a vehicle in range, it turns on a red light an
 #Important
 In this sketch we assume that the vehicle fits between the sensor and the garage door.
 
-The ultrasonic sensor must be placed on the ceiling and in the opposite side of a garage door.   
+The ultrasonic sensor must be placed on the ceiling and in the opposite side of the garage door.   
 
-You have to change constant RANGE_OK, that representes the distance between the ceiling and the floor, to the desired value.
+You have to change constant `RANGE_OK`, that representes the distance between the ceiling and the floor, to the desired value.
 
 #Circuit
 	* +V connection of the PING))) attached to +5V
