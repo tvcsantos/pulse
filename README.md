@@ -41,3 +41,8 @@ You have to change constant `RANGE_OK`, that representes the distance between th
 	* -LED connection of red led attached to ground
 
 Note that instead of using only one LED for each light you can use relays to trigger sources that need more than 5v. (e.g. 12v DC led strip, 12v DC horn). For more information on how to connect relays to arduino please see http://playground.arduino.cc/uploads/Learning/relays.pdf
+
+
+## Copyright
+
+Pulse is provided Copyright © 2016 under LGPL License.
