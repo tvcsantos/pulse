@@ -55,19 +55,23 @@
 // uncomment for debugging the distance
 // obtained by the sensor
 //#define DEBUG
+// uncomment in case you are using 
+// 3 relay modules for the outputs, 
+// they usually come with inverted polarity
+//#define INVERTED_POLARITY
 
 const int PING_TRIG_PIN = 22;
 const int PING_ECHO_PIN = 23;
 const int BUZZER_PIN = 24;
 const int GREEN_PIN = 25;
 const int RED_PIN = 26;
-const char RANGE_OK = 180;//185
-const char OFF = 0;
-const char RED = 1;
-const char GREEN = 2;
-const long BEEP_INTERVAL = 2000;
+const uint8_t RANGE_OK = 180;//185
+const uint8_t OFF = 0;
+const uint8_t RED = 1;
+const uint8_t GREEN = 2;
+const unsigned long BEEP_INTERVAL = 500;
 
-char currState = OFF;
+uint8_t currState = OFF;
 unsigned long prevTime = 0;
 unsigned long beepTimer = 0;
 bool beeping = false;
@@ -89,7 +93,7 @@ void setup() {
 void loop() {
   // establish variables for duration of the ping,
   // and the distance result in centimeters:
-  long duration, cm;
+  unsigned long duration, cm;
 
   // The PING))) is triggered by a HIGH pulse of 2 or more 
   // microseconds. Give a short LOW pulse beforehand to 
@@ -108,7 +112,15 @@ void loop() {
   // convert the time into a distance
   cm = microsecondsToCentimeters(duration);
 
+  #ifdef DEBUG  
+  Serial.print(cm);
+  Serial.println("cm");
+  #endif
+
   if (cm < RANGE_OK) {
+    #ifdef DEBUG  
+    Serial.println("object detected");
+    #endif
     // Something detected
     // change state to red
     currState = RED;
@@ -117,6 +129,10 @@ void loop() {
     // change state to green
     currState = GREEN;
   }
+
+  #ifdef DEBUG  
+  Serial.println(currState);
+  #endif
 
   int greenState = LOW;
   int redState = LOW;
@@ -149,20 +165,26 @@ void loop() {
     else buzzerState = LOW;
   }
 
+  #ifdef DEBUG  
+  Serial.println(buzzerState);
+  Serial.println(greenState);
+  Serial.println(redState);
+  #endif
+
+  #ifdef INVERTED_POLARITY
+  digitalWrite(BUZZER_PIN, buzzerState == HIGH ? LOW : HIGH);  
+  digitalWrite(GREEN_PIN, greenState == HIGH ? LOW : HIGH);
+  digitalWrite(RED_PIN, redState == HIGH ? LOW : HIGH);
+  #else
   digitalWrite(BUZZER_PIN, buzzerState);  
   digitalWrite(GREEN_PIN, greenState);
   digitalWrite(RED_PIN, redState);
-
-  #ifdef DEBUG  
-  Serial.print(cm);
-  Serial.print("cm");
-  Serial.println();
   #endif
 
   delay(100);
 }
 
-long microsecondsToCentimeters(long microseconds) {
+unsigned long microsecondsToCentimeters(unsigned long microseconds) {
   // The speed of sound is 340 m/s or 29 microseconds per 
   // centimeter. The ping travels out and back, so to find 
   // the distance of the object we take half of the distance
