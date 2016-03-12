@@ -88,6 +88,42 @@ void setup() {
   pinMode(PING_ECHO_PIN, INPUT);
   pinMode(GREEN_PIN, OUTPUT);
   pinMode(RED_PIN, OUTPUT);
+
+  boot();
+}
+
+void boot() {
+  #ifdef INVERTED_POLARITY
+  digitalWrite(BUZZER_PIN, HIGH);
+  digitalWrite(GREEN_PIN, HIGH);
+  digitalWrite(RED_PIN, HIGH);
+  digitalWrite(BUZZER_PIN, LOW);  
+  delay(500);
+  digitalWrite(BUZZER_PIN, HIGH);
+  delay(250);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(500);
+  digitalWrite(GREEN_PIN, HIGH);
+  delay(250);
+  digitalWrite(RED_PIN, LOW);
+  delay(500);
+  digitalWrite(RED_PIN, HIGH);
+  #else
+  digitalWrite(BUZZER_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  digitalWrite(RED_PIN, LOW);
+  digitalWrite(BUZZER_PIN, HIGH);  
+  delay(500);
+  digitalWrite(BUZZER_PIN, LOW);
+  delay(250);
+  digitalWrite(GREEN_PIN, HIGH);
+  delay(500);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(250);
+  digitalWrite(RED_PIN, HIGH);
+  delay(500);
+  digitalWrite(RED_PIN, LOW);
+  #endif  
 }
 
 void loop() {
