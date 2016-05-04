@@ -24,7 +24,7 @@ In this sketch we assume that the vehicle fits between the sensor and the garage
 
 The ultrasonic sensor must be placed on the ceiling and in the opposite side of the garage door.   
 
-You have to change constant `RANGE_OK`, that representes the distance between the ceiling and the floor, to the desired value.
+You have to change constant `RANGE_OK`, that representes the distance between the ceiling and the floor, to the desired value. Also we have used an Arduino Mega 2560, so if you use another board you have to change pin numbers accordingly.
 
 #Circuit
 	* +V connection of the PING))) attached to +5V
