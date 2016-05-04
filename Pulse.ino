@@ -27,7 +27,8 @@
 
    You have to change constant RANGE_OK, that represents the
    distance between the ceiling and the floor, to the desired 
-   value.
+   value. Also we have used an Arduino Mega 2560, so if you
+   use another board you have to change pin numbers accordingly.
    
    The circuit:
 	* +V connection of the PING))) attached to +5V
@@ -65,17 +66,33 @@ const int PING_ECHO_PIN = 23;
 const int BUZZER_PIN = 24;
 const int GREEN_PIN = 25;
 const int RED_PIN = 26;
-const uint8_t RANGE_OK = 180;//185
+
+// change this value taking 
+// into account your distance 
+// between ceil and floor
+const uint8_t RANGE_OK = 100;//185;
+
 const uint8_t OFF = 0;
 const uint8_t RED = 1;
 const uint8_t GREEN = 2;
 const unsigned long BEEP_INTERVAL = 500;
+
+// stable read count for smooth
+// operation, deals with
+// noise/imprecision from sensor
+const uint8_t STABLE_READS = 5;//3;
+
+const int DELAY_ON_OFF = 500;
+const int DELAY_BETWEEN = 250;
 
 uint8_t currState = OFF;
 unsigned long prevTime = 0;
 unsigned long beepTimer = 0;
 bool beeping = false;
 int buzzerState = LOW;
+uint8_t countStable = 0;
+uint8_t lastRead = OFF;
+uint8_t currRead = OFF;
 
 void setup() {
   #ifdef DEBUG
@@ -86,8 +103,8 @@ void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(PING_TRIG_PIN, OUTPUT);
   pinMode(PING_ECHO_PIN, INPUT);
-  pinMode(GREEN_PIN, OUTPUT);
   pinMode(RED_PIN, OUTPUT);
+  pinMode(GREEN_PIN, OUTPUT);
 
   boot();
 }
@@ -95,34 +112,36 @@ void setup() {
 void boot() {
   #ifdef INVERTED_POLARITY
   digitalWrite(BUZZER_PIN, HIGH);
-  digitalWrite(GREEN_PIN, HIGH);
   digitalWrite(RED_PIN, HIGH);
+  digitalWrite(GREEN_PIN, HIGH);
+  
   digitalWrite(BUZZER_PIN, LOW);  
-  delay(500);
+  delay(DELAY_ON_OFF);
   digitalWrite(BUZZER_PIN, HIGH);
-  delay(250);
-  digitalWrite(GREEN_PIN, LOW);
-  delay(500);
-  digitalWrite(GREEN_PIN, HIGH);
-  delay(250);
+  delay(DELAY_BETWEEN);
   digitalWrite(RED_PIN, LOW);
-  delay(500);
+  delay(DELAY_ON_OFF);
   digitalWrite(RED_PIN, HIGH);
+  delay(DELAY_BETWEEN);
+  digitalWrite(GREEN_PIN, LOW);
+  delay(DELAY_ON_OFF);
+  digitalWrite(GREEN_PIN, HIGH);
   #else
   digitalWrite(BUZZER_PIN, LOW);
-  digitalWrite(GREEN_PIN, LOW);
   digitalWrite(RED_PIN, LOW);
+  digitalWrite(GREEN_PIN, LOW);
+  
   digitalWrite(BUZZER_PIN, HIGH);  
-  delay(500);
+  delay(DELAY_ON_OFF);
   digitalWrite(BUZZER_PIN, LOW);
-  delay(250);
-  digitalWrite(GREEN_PIN, HIGH);
-  delay(500);
-  digitalWrite(GREEN_PIN, LOW);
-  delay(250);
+  delay(DELAY_BETWEEN);
   digitalWrite(RED_PIN, HIGH);
-  delay(500);
+  delay(DELAY_ON_OFF);
   digitalWrite(RED_PIN, LOW);
+  delay(DELAY_BETWEEN);
+  digitalWrite(GREEN_PIN, HIGH);
+  delay(DELAY_ON_OFF);
+  digitalWrite(GREEN_PIN, LOW);
   #endif  
 }
 
@@ -150,29 +169,45 @@ void loop() {
 
   #ifdef DEBUG  
   Serial.print(cm);
-  Serial.println("cm");
+  Serial.println(F(" cm"));
   #endif
+
+  lastRead = currRead;
 
   if (cm < RANGE_OK) {
     #ifdef DEBUG  
-    Serial.println("object detected");
+    Serial.println(F("Object Detected"));
     #endif
     // Something detected
     // change state to red
-    currState = RED;
+    currRead = RED;
   } else {
     // Nothing detected
     // change state to green
-    currState = GREEN;
+    currRead = GREEN;
   }
 
   #ifdef DEBUG  
-  Serial.println(currState);
+  Serial.print(F("currRead: "));
+  Serial.println(currRead);
   #endif
 
   int greenState = LOW;
   int redState = LOW;
-  
+
+  if (lastRead == currRead) {
+    countStable = min(countStable, UINT8_MAX - 1) + 1;
+  } else countStable = 0;
+
+  if (countStable < STABLE_READS) {
+    currState = GREEN;
+  } else currState = currRead;
+
+  #ifdef DEBUG  
+  Serial.print(F("currState: "));
+  Serial.println(currState);
+  #endif
+    
   switch (currState) {
     case RED:
       if (!beeping) {
@@ -202,19 +237,23 @@ void loop() {
   }
 
   #ifdef DEBUG  
+  Serial.print(F("buzzerState: "));
   Serial.println(buzzerState);
-  Serial.println(greenState);
+  Serial.print(F("redState: "));
   Serial.println(redState);
+  Serial.print(F("greenState: "));
+  Serial.println(greenState);
+  buzzerState = LOW; //just mute the buzzer
   #endif
 
   #ifdef INVERTED_POLARITY
   digitalWrite(BUZZER_PIN, buzzerState == HIGH ? LOW : HIGH);  
-  digitalWrite(GREEN_PIN, greenState == HIGH ? LOW : HIGH);
   digitalWrite(RED_PIN, redState == HIGH ? LOW : HIGH);
+  digitalWrite(GREEN_PIN, greenState == HIGH ? LOW : HIGH);
   #else
   digitalWrite(BUZZER_PIN, buzzerState);  
-  digitalWrite(GREEN_PIN, greenState);
   digitalWrite(RED_PIN, redState);
+  digitalWrite(GREEN_PIN, greenState);
   #endif
 
   delay(100);
@@ -224,7 +263,7 @@ unsigned long microsecondsToCentimeters(unsigned long microseconds) {
   // The speed of sound is 340 m/s or 29 microseconds per 
   // centimeter. The ping travels out and back, so to find 
   // the distance of the object we take half of the distance
-  // travelled. So the result would be microseconds/ 29 / 2,
+  // travelled. So the result would be microseconds / 29 / 2,
   // or by doing some extra math, microseconds / 58.
   return microseconds / 58;
 }
