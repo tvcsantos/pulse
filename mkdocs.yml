@@ -5,7 +5,7 @@ repo_name: tvcsantos/pulse
 repo_url: https://github.com/tvcsantos/pulse
 edit_uri: blob/master/docs/
 
-copyright: Copyright 2021 Tiago Santos
+copyright: Copyright 2016 Tiago Santos
 
 theme:
   name: material
