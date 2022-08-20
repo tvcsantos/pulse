@@ -77,13 +77,13 @@ and in the opposite side of a garage door.
 
 | Garage Layout | Description            | Green Light | Red Light | Buzzer |
 |---------------|------------------------|-------------|-----------|--------|
-| W _ S _ _ G   | Empty Garage           | On          | Off       | Off    |
-| W _ S _ V G   | Vehicle Parked OK      | On          | Off       | Off    |
-| W _ S V _ G   | Vehicle Parked OK      | On          | Off       | Off    |
-| W _ V _ _ G   | Vehicle Below Sensor   | Off         | On        | On     |
-| W V S _ _ G   | Vehicle Crossed Sensor | Off         | On        | On     |
+| `W _ S _ _ G` | Empty Garage           | On          | Off       | Off    |
+| `W _ S _ V G` | Vehicle Parked OK      | On          | Off       | Off    |
+| `W _ S V _ G` | Vehicle Parked OK      | On          | Off       | Off    |
+| `W _ V _ _ G` | Vehicle Below Sensor   | Off         | On        | On     |
+| `W V S _ _ G` | Vehicle Crossed Sensor | Off         | On        | On     |
 
-**(W - Wall, S - Sensor, G - Garage Door, V - Vehicle)**
+**(`W` - Wall, `S` - Sensor, `G` - Garage Door, `V` - Vehicle)**
 
 On the first one the garage is empty hence the green light is on and the red
 light and buzzer are off. On the second and third ones the vehicle is inside the
