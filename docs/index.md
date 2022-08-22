@@ -95,7 +95,7 @@ hence the green light is off and the red light and buzzer are on in order to
 alert the driver.
 
 <figure markdown>
-<iframe style="width: 500px; height: 375px" src="https://www.youtube.com/embed/2pm2MEYWfsA" allowfullscreen></iframe>
+<iframe width="578" height="434" src="https://www.youtube.com/embed/2pm2MEYWfsA" title="Pulse Working" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <figcaption>Pulse Working</figcaption>
 </figure>
 
