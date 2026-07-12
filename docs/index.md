@@ -3,84 +3,84 @@
 ## Motivation
 
 I have a garage, and it's not only used for parking the car, but also for
-storing all kinds of things like tools, machines, garden related stuff and so
-on. One thing that is tough is parking the car with all that stuff lying
-around, one must have a good eye not to crash into something and also to keep
-the car far enough from things to give space for walking around the vehicle.
+storing all kinds of things like tools, machines, garden-related stuff and so
+on. Parking the car with all that stuff lying around is tough: one must have a
+good eye not to crash into something, and also keep the car far enough from
+things to leave space for walking around the vehicle.
 
 The usable space in my garage for parking the car can be viewed as a rectangle,
-that I'll abstract here as a horizontal line.
+which I'll abstract here as a horizontal line.
 
-```
+```text
 W _ _ _ _ G
 ```
 
 where `W` stands for wall and `G` for the garage door.
 
-The focus of this device is to prevent me from crashing into the back wall in my
-garage since I'm used to park the car in reverse (with the trunk facing the
-wall), and despite the wall I still have stuff in front of it in the ground
-level which does not give me a clear view when to stop the car.
+The focus of this device is to prevent me from crashing into the back wall of
+my garage. I usually park the car in reverse (with the trunk facing the wall),
+and besides the wall itself there is also stuff in front of it at ground level,
+so I don't have a clear view of when to stop the car.
 
 ## The idea
 
-So one day I woke up and since I had an [Arduino][arduino] [Mega 2560][mega2560]
-board lying around, I thought OK, why not use the Arduino to solve this problem.
-I've started thinking on what would I need to do it, the first thing that came
-to mind was how I would detect that the vehicle was getting closer to an
-obstacle, well the ultrasonic sensor is the answer since it can measure the
-distance to an obstacle. But in my case I can't place the sensor on the back
-wall since I have stuff in front of it. OK then I thought about those parking
-lot ceiling sensors in the supermarket that detect if a car is parked or not.
-The same idea can be applied here, instead of detecting that the car is close to
-the wall, let's just detect that the car is below the sensor at some point and
-that crossing over corresponds to a danger situation of crashing into the wall.
+So one day I woke up, and since I had an [Arduino][arduino]
+[Mega 2560][mega2560] board lying around, I thought: OK, why not use it to
+solve this problem? I started thinking about what I would need. The first thing
+that came to mind was how to detect that the vehicle was getting close to an
+obstacle. An ultrasonic sensor is the natural answer, since it can measure the
+distance to whatever is in front of it. But in my case I can't place the sensor
+on the back wall, since I have stuff in front of it. Then I thought about those
+ceiling sensors in supermarket parking lots that detect whether a spot is
+taken. The same idea can be applied here: instead of detecting that the car is
+close to the wall, let's just detect that the car is below the sensor at some
+point, and treat crossing it as a danger situation of crashing into the wall.
 
-Now one thing left was how I would alert myself that the car is below (crossing)
-the sensor, well some LED's and a buzzer will do the trick, but since I want
-this to be cooler, fancier and visible enough from the other side of the garage,
-why not build a semaphore using 12V LED MR16 bulbs like the ones people usually
-use in bathroom ceilings. Also, I would need some jumper cables to connect
-things.
+The one thing left was how to alert myself that the car is below (or crossing)
+the sensor. Some LEDs and a buzzer would do the trick, but since I wanted this
+to be cooler, fancier and visible from the other side of the garage, why not
+build a semaphore using 12V MR16 LED bulbs, like the ones people usually put in
+bathroom ceilings? Also, I would need some jumper cables to connect things.
 
 ## Building the device
 
-OK now that things were planned the two remaining tasks were: programming the
-Arduino; and where I would put the Arduino, a relay module needed for operating
-the 12V LED bulbs since Arduino Mega 2560 runs at 5V, the ultrasonic sensor, the
-bulbs and the buzzer.
+Now that things were planned, two tasks remained: programming the Arduino, and
+finding a home for all the parts: the Arduino, a relay module (needed to
+operate the 12V LED bulbs, since the Arduino runs at 5V), the ultrasonic
+sensor, the bulbs and the buzzer.
 
-For the Arduino, relay module and ultrasonic sensor I used a plastic box with
-16x17x7cm. For the MR16 bulbs and the buzzer I will make a wooden box. Below is
-a picture of things taking form.
+For the Arduino, the relay module and the ultrasonic sensor I used a 16x17x7cm
+plastic box. For the MR16 bulbs and the buzzer I made a wooden box. Below is a
+picture of things taking form.
 
 <figure>
   <img src="/img/pulse-build.jpeg" alt="Pulse assembly" width="500">
   <figcaption>Pulse assembly</figcaption>
 </figure>
 
-Below we have the full list of items used to build the device:
+Below is the full list of items used to build the device:
 
-- Arduino Mega/Nano/Uno (Running at 5V)
-- 5V Relay Module with at least 3 relays
-- Jumper Cables
-- Plastic Box + Wooden Box
-- 2 MR16 12V LED Bulbs
-- 12V Buzzer
-- 12V Power Adapter for the bulbs and buzzer
-- 5V USB power adapter for Arduino
-- USB Cable A Male to B Male for connecting the power adapter to the Arduino
+- Arduino Mega/Nano/Uno (running at 5V)
+- 5V relay module with at least 3 relays
+- Jumper cables
+- Plastic box + wooden box
+- 2 MR16 12V LED bulbs
+- 12V buzzer
+- 12V power adapter for the bulbs and buzzer
+- 5V USB power adapter for the Arduino
+- USB cable A male to B male for connecting the power adapter to the Arduino
 - A cable with 4 conductors for connecting the positive lead of the 2 bulbs and
-  buzzer to the relay module and one for common ground
+  buzzer to the relay module, and one for common ground
 
 ## How it works
 
-Now follows an operation example for you to see how the device works. The
-operation is really simple, if the ultrasonic sensor detects a vehicle in range,
-it turns on a red light and starts beeping in order to alert that the vehicle
-should not move further. If no vehicle is detected a green light is turned on
-and no beeping is produced. The ultrasonic sensor must be placed on the ceiling
-and on the opposite side of the garage door.
+The operation is really simple: if the ultrasonic sensor detects a vehicle in
+range, the device turns on the red light and starts beeping to alert that the
+vehicle should not move any further. If no vehicle is detected, the green light
+is turned on and there is no beeping. The sensor must be placed on the ceiling,
+on the opposite side from the garage door.
+
+The table below summarizes the possible situations:
 
 | Garage Layout | Description            | Green Light | Red Light | Buzzer |
 |---------------|------------------------|-------------|-----------|--------|
@@ -92,14 +92,13 @@ and on the opposite side of the garage door.
 
 **(`W` - Wall, `S` - Sensor, `G` - Garage Door, `V` - Vehicle)**
 
-On the first one the garage is empty hence the green light is on and the red
-light and buzzer are off. On the second and third ones the vehicle is inside the
-garage and is considered parked correctly, since it is between the sensor and
-the garage door, so the green light is on, the red light and the buzzer are off.
-The last two are considered a wrong parking situation because in the fourth one
-the car is below the sensor and on the fifth the vehicle crossed the sensor,
-hence the green light is off and the red light and buzzer are on in order to
-alert the driver.
+In the first row the garage is empty, so the green light is on and the red
+light and buzzer are off. In the second and third rows the vehicle is inside
+the garage and considered correctly parked, since it sits between the sensor
+and the garage door, so the green light is on and the red light and buzzer are
+off. The last two rows are wrong parking situations: in the fourth the car is
+below the sensor and in the fifth it has crossed it, so the green light goes
+off and the red light and buzzer turn on to alert the driver.
 
 ## Demo
 
@@ -117,8 +116,8 @@ your ceiling and the floor, so make sure you adjust it to your garage. To avoid
 flickering between states due to sensor noise, the light only switches after a
 number of consecutive stable readings (`STABLE_READS`).
 
-The wiring of the circuit is described at the top of the sketch. Two compile
-time flags can be enabled by uncommenting them:
+The wiring of the circuit is described at the top of the sketch. Two
+compile-time flags can be enabled by uncommenting them:
 
 - `DEBUG` - prints the measured distance and state transitions to the serial
   monitor
@@ -146,8 +145,8 @@ lifting:
 - The relay coil `K1` sits between `Relay Power V+` and the transistor's
   collector, so the coil current flows from V+ through the coil and the
   transistor to ground. The coil can use its own power supply (12V in our
-  case), the Arduino only ever touches the transistor. When the coil energizes
-  it pulls the relay contacts closed, switching the actual load - which is
+  case); the Arduino only ever touches the transistor. When the coil energizes
+  it pulls the relay contacts closed, switching the actual load, which is
   electrically isolated from everything else.
 - The diode `D1` is the flyback diode. A coil is an inductor, so when the
   transistor switches off, the collapsing magnetic field generates a large
@@ -156,9 +155,9 @@ lifting:
 - Note that the Arduino ground and the relay supply ground must be connected,
   otherwise the base current has no return path and nothing switches.
 
-The ready-made relay modules like the one used in this build already include
-this whole circuit per channel, usually with an optocoupler as well - that is
-also why the sketch has the `INVERTED_POLARITY` flag, since these modules are
+Ready-made relay modules like the one used in this build already include this
+whole circuit per channel, usually with an optocoupler as well. That is also
+why the sketch has the `INVERTED_POLARITY` flag, since these modules are
 typically active low.
 
 [arduino]: http://arduino.cc/
