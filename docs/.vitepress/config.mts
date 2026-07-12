@@ -20,6 +20,11 @@ export default defineConfig({
       dark: '/icon-light.png'
     },
 
+    nav: [
+      { text: 'Overview', link: '/' },
+      { text: 'The sketch', link: '/code' }
+    ],
+
     socialLinks: [
       { icon: 'github', link: 'https://github.com/tvcsantos/pulse' }
     ],

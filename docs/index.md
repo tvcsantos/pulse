@@ -109,7 +109,7 @@ off and the red light and buzzer turn on to alert the driver.
 
 ## The code
 
-The whole thing is driven by a single Arduino sketch, [`pulse.ino`][sketch]. It
+The whole thing is driven by a single Arduino sketch, [`pulse.ino`](./code). It
 triggers the ultrasonic sensor on every loop, converts the echo time into a
 distance and compares it against the `RANGE_OK` constant - the distance between
 your ceiling and the floor, so make sure you adjust it to your garage. To avoid
@@ -163,5 +163,3 @@ typically active low.
 [arduino]: http://arduino.cc/
 
 [mega2560]: http://www.arduino.cc/en/Main/ArduinoBoardMega2560
-
-[sketch]: https://github.com/tvcsantos/pulse/blob/main/pulse.ino
