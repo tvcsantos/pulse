@@ -1,10 +1,12 @@
 # Overview
 
-I have a garage, and it's not only used for parking the car, but also for store
-all kinds of things like tools, machines, garden related stuff and so on. One
-thing that is tough is parking the car with all that stuff lying around, one
-must have a good eye not to crash into something and also to keep the car far
-enough from things to give space for walking around the vehicle.
+## Motivation
+
+I have a garage, and it's not only used for parking the car, but also for
+storing all kinds of things like tools, machines, garden related stuff and so
+on. One thing that is tough is parking the car with all that stuff lying
+around, one must have a good eye not to crash into something and also to keep
+the car far enough from things to give space for walking around the vehicle.
 
 The usable space in my garage for parking the car can be viewed as a rectangle,
 that I'll abstract here as a horizontal line.
@@ -19,6 +21,8 @@ The focus of this device is to prevent me from crashing into the back wall in my
 garage since I'm used to park the car in reverse (with the trunk facing the
 wall), and despite the wall I still have stuff in front of it in the ground
 level which does not give me a clear view when to stop the car.
+
+## The idea
 
 So one day I woke up and since I had an [Arduino][arduino] [Mega 2560][mega2560]
 board lying around, I thought OK, why not use the Arduino to solve this problem.
@@ -36,10 +40,12 @@ Now one thing left was how I would alert myself that the car is below (crossing)
 the sensor, well some LED's and a buzzer will do the trick, but since I want
 this to be cooler, fancier and visible enough from the other side of the garage,
 why not build a semaphore using 12V LED MR16 bulbs like the ones people usually
-use in bathrooms ceilings. Also, I would need some jumper cables to connect
+use in bathroom ceilings. Also, I would need some jumper cables to connect
 things.
 
-OK now that things were planed the two remaining tasks where: programming the
+## Building the device
+
+OK now that things were planned the two remaining tasks were: programming the
 Arduino; and where I would put the Arduino, a relay module needed for operating
 the 12V LED bulbs since Arduino Mega 2560 runs at 5V, the ultrasonic sensor, the
 bulbs and the buzzer.
@@ -48,9 +54,8 @@ For the Arduino, relay module and ultrasonic sensor I used a plastic box with
 16x17x7cm. For the MR16 bulbs and the buzzer I will make a wooden box. Below is
 a picture of things taking form.
 
-<!--suppress HtmlUnknownAttribute -->
-<figure markdown>
-  ![Image title](img/pulseBuild.jpeg){ width=500 }
+<figure>
+  <img src="/img/pulse-build.jpeg" alt="Pulse assembly" width="500">
   <figcaption>Pulse assembly</figcaption>
 </figure>
 
@@ -68,12 +73,14 @@ Below we have the full list of items used to build the device:
 - A cable with 4 conductors for connecting the positive lead of the 2 bulbs and
   buzzer to the relay module and one for common ground
 
+## How it works
+
 Now follows an operation example for you to see how the device works. The
 operation is really simple, if the ultrasonic sensor detects a vehicle in range,
 it turns on a red light and starts beeping in order to alert that the vehicle
 should not move further. If no vehicle is detected a green light is turned on
 and no beeping is produced. The ultrasonic sensor must be placed on the ceiling
-and in the opposite side of a garage door.
+and on the opposite side of the garage door.
 
 | Garage Layout | Description            | Green Light | Red Light | Buzzer |
 |---------------|------------------------|-------------|-----------|--------|
@@ -94,11 +101,68 @@ the car is below the sensor and on the fifth the vehicle crossed the sensor,
 hence the green light is off and the red light and buzzer are on in order to
 alert the driver.
 
-<figure markdown>
+## Demo
+
+<figure>
 <iframe width="578" height="434" src="https://www.youtube.com/embed/2pm2MEYWfsA" title="Pulse Working" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 <figcaption>Pulse Working</figcaption>
 </figure>
 
+## The code
+
+The whole thing is driven by a single Arduino sketch, [`pulse.ino`][sketch]. It
+triggers the ultrasonic sensor on every loop, converts the echo time into a
+distance and compares it against the `RANGE_OK` constant - the distance between
+your ceiling and the floor, so make sure you adjust it to your garage. To avoid
+flickering between states due to sensor noise, the light only switches after a
+number of consecutive stable readings (`STABLE_READS`).
+
+The wiring of the circuit is described at the top of the sketch. Two compile
+time flags can be enabled by uncommenting them:
+
+- `DEBUG` - prints the measured distance and state transitions to the serial
+  monitor
+- `INVERTED_POLARITY` - inverts all outputs, needed for relay modules that are
+  active low, like the one used in this build
+
+### Driving 12V loads with relays
+
+If you want to drive 12V loads like the MR16 bulbs and buzzer used here, the
+diagram below shows how to drive a relay from a digital pin.
+
+<figure>
+  <img src="/img/relays.png" alt="How to drive relays with the Arduino" class="light-paper">
+  <figcaption>How to drive relays with the Arduino</figcaption>
+</figure>
+
+The reason for this circuit is that an Arduino pin can only supply a few tens
+of milliamps at 5V, which is not enough to power a relay coil directly. So the
+pin doesn't power the coil, it just switches a transistor that does the heavy
+lifting:
+
+- The digital pin feeds a small current through the base resistor `R1` into the
+  base of the NPN transistor `Q1`, turning it on. Use a 2N2222 for small relays
+  or a TIP102 for large ones.
+- The relay coil `K1` sits between `Relay Power V+` and the transistor's
+  collector, so the coil current flows from V+ through the coil and the
+  transistor to ground. The coil can use its own power supply (12V in our
+  case), the Arduino only ever touches the transistor. When the coil energizes
+  it pulls the relay contacts closed, switching the actual load - which is
+  electrically isolated from everything else.
+- The diode `D1` is the flyback diode. A coil is an inductor, so when the
+  transistor switches off, the collapsing magnetic field generates a large
+  reverse voltage spike that would destroy the transistor. The diode safely
+  recirculates that energy back through the coil.
+- Note that the Arduino ground and the relay supply ground must be connected,
+  otherwise the base current has no return path and nothing switches.
+
+The ready-made relay modules like the one used in this build already include
+this whole circuit per channel, usually with an optocoupler as well - that is
+also why the sketch has the `INVERTED_POLARITY` flag, since these modules are
+typically active low.
+
 [arduino]: http://arduino.cc/
 
 [mega2560]: http://www.arduino.cc/en/Main/ArduinoBoardMega2560
+
+[sketch]: https://github.com/tvcsantos/pulse/blob/main/pulse.ino

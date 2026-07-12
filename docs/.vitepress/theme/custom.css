@@ -1,0 +1,29 @@
+.vp-doc figure {
+  margin: 24px auto;
+  text-align: center;
+}
+
+.vp-doc figure img,
+.vp-doc figure iframe {
+  display: inline-block;
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.vp-doc figure iframe {
+  width: 100%;
+  max-width: 578px;
+  height: auto;
+  aspect-ratio: 4 / 3;
+}
+
+.vp-doc figure img.light-paper {
+  background: #fff;
+  padding: 12px;
+}
+
+.vp-doc figcaption {
+  margin-top: 8px;
+  font-size: 14px;
+  color: var(--vp-c-text-2);
+}
