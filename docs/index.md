@@ -1,3 +1,50 @@
+<div class="hero-banner">
+<svg viewBox="0 0 900 260" role="img" aria-label="Pulse - Arduino ultrasonic parking sensor" xmlns="http://www.w3.org/2000/svg">
+  <rect x="0" y="0" width="900" height="260" rx="16" class="hero-bg"/>
+  <!-- wordmark -->
+  <text x="56" y="128" class="hero-title">Pulse</text>
+  <path class="hero-ekg" d="M58 160 H200 L216 134 L238 182 L254 160 H500" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+  <text x="58" y="214" class="hero-tagline"><tspan class="hero-acc">P</tspan>arking <tspan class="hero-acc">Ul</tspan>trasonic <tspan class="hero-acc">Se</tspan>nsor, powered by Arduino</text>
+  <!-- ceiling -->
+  <line x1="560" y1="30" x2="884" y2="30" class="hero-line"/>
+  <g class="hero-hatch">
+    <line x1="580" y1="30" x2="590" y2="18"/>
+    <line x1="620" y1="30" x2="630" y2="18"/>
+    <line x1="660" y1="30" x2="670" y2="18"/>
+    <line x1="700" y1="30" x2="710" y2="18"/>
+    <line x1="740" y1="30" x2="750" y2="18"/>
+    <line x1="780" y1="30" x2="790" y2="18"/>
+    <line x1="820" y1="30" x2="830" y2="18"/>
+    <line x1="860" y1="30" x2="870" y2="18"/>
+  </g>
+  <!-- ultrasonic sensor -->
+  <rect x="663" y="30" width="48" height="20" rx="4" class="hero-sensor"/>
+  <circle cx="678" cy="40" r="5" class="hero-eye"/>
+  <circle cx="696" cy="40" r="5" class="hero-eye"/>
+  <!-- sonar waves -->
+  <g fill="none" stroke-linecap="round" class="hero-waves">
+    <path class="sonar-wave" d="M669 66 Q687 80 705 66"/>
+    <path class="sonar-wave" d="M657 86 Q687 108 717 86"/>
+    <path class="sonar-wave" d="M645 106 Q687 136 729 106"/>
+  </g>
+  <!-- car -->
+  <g class="hero-car">
+    <path d="M580 224 L580 204 Q580 194 592 192 L620 188 Q642 166 668 166 L716 166 Q744 166 762 188 L780 192 Q792 194 792 204 L792 224 Z"/>
+    <circle cx="622" cy="224" r="15" class="hero-wheel"/>
+    <circle cx="748" cy="224" r="15" class="hero-wheel"/>
+    <circle cx="622" cy="224" r="6" class="hero-hub"/>
+    <circle cx="748" cy="224" r="6" class="hero-hub"/>
+  </g>
+  <!-- ground -->
+  <line x1="560" y1="241" x2="884" y2="241" class="hero-line"/>
+  <!-- semaphore -->
+  <rect x="836" y="88" width="30" height="62" rx="8" class="hero-sema"/>
+  <circle cx="851" cy="107" r="9" class="hero-red"/>
+  <circle cx="851" cy="131" r="9" class="hero-green-off"/>
+  <line x1="866" y1="112" x2="884" y2="112" class="hero-line"/>
+</svg>
+</div>
+
 # Overview
 
 ## Motivation
